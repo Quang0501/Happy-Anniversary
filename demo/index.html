@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyện Tình Yêu Của Chúng Mình</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- 2. Cấu hình màu sắc & Reset --- */
+        :root {
+            --primary-color: #ff9a9e;
+            /* Hồng pastel chủ đạo */
+            --secondary-color: #fad0c4;
+            /* Hồng kem */
+            --accent-color: #ff758c;
+            /* Điểm nhấn đậm hơn */
+            --text-color: #555;
+            /* Màu chữ nội dung */
+            --bg-color: #fff9f9;
+            /* Màu nền web */
+            --font-title: 'Dancing Script', cursive;
+            --font-body: 'Poppins', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Decoration (Hoa & Tim bay) --- */
+        .falling-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .falling-item {
+            position: absolute;
+            top: -10%;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* --- Typography --- */
+        h1,
+        h2,
+        h3 {
+            font-family: var(--font-title);
+            color: var(--accent-color);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '🌸';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+        }
+
+        /* --- 3. Hero Banner (Ảnh cặp đôi) --- */
+        header {
+            height: 100vh;
+            /* Thay ảnh nền cặp đôi ở đây */
+            /* Copy dòng này đè vào chỗ background cũ */
+            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+                url('https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 4.5rem;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+
+        header p {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        header .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            animation: bounce 2s infinite;
+            color: white;
+            font-size: 2rem;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-20px);
+            }
+
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* --- Bộ đếm ngày (Counter) --- */
+        /* .counter-section {
+            background: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-top: -50px;
+            width: 80%;
+            margin-left: 10%;
+            border-radius: 20px;
+            position: relative;
+            z-index: 10;
+        } */
+        .counter-section {
+            background: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+
+            width: 80%;
+            margin: 0 auto;
+            border-radius: 20px;
+
+            position: sticky;
+            top: 10px;
+            /* khoảng cách với mép trên */
+            z-index: 999;
+        }
+
+        .counter-box {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .c-item {
+            text-align: center;
+        }
+
+        .c-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            display: block;
+        }
+
+        .c-label {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        /* --- 4. About Us (Từng người) --- */
+        .about-section {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .couple-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .person {
+            max-width: 300px;
+        }
+
+        .person-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary-color);
+            padding: 5px;
+            transition: transform 0.3s;
+        }
+
+        .person-img:hover {
+            transform: scale(1.05);
+        }
+
+        .person h3 {
+            margin-top: 15px;
+            font-size: 2rem;
+        }
+
+        .person p {
+            font-size: 0.95rem;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        .heart-divider {
+            font-size: 3rem;
+            color: var(--accent-color);
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* --- 5. Timeline (Dòng thời gian) --- */
+        .timeline-section {
+            background: #fff;
+            padding: 80px 20px;
+            position: relative;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--secondary-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            border-radius: 2px;
+        }
+
+        .container {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+
+        .container::after {
+            content: '💗';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            right: -17px;
+            background-color: white;
+            border: 4px solid var(--accent-color);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+            font-size: 12px;
+            line-height: 22px;
+            text-align: center;
+            color: var(--accent-color);
+        }
+
+        .left {
+            left: 0;
+        }
+
+        .right {
+            left: 50%;
+        }
+
+        .left::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            right: 30px;
+            border: medium solid white;
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent #fff5f7;
+        }
+
+        .right::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            left: 30px;
+            border: medium solid white;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent #fff5f7 transparent transparent;
+        }
+
+        .right::after {
+            left: -16px;
+        }
+
+        .content {
+            padding: 20px 30px;
+            background-color: #fff5f7;
+            position: relative;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .content:hover {
+            transform: translateY(-5px);
+        }
+
+        .content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .content img {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        /* --- 6. Album Ảnh (Gallery) --- */
+        .gallery-section {
+            padding: 80px 20px;
+            background: var(--bg-color);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            height: 300px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        /* Lightbox (Xem ảnh to) */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .lightbox-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            object-fit: contain;
+            animation: zoom 0.6s;
+        }
+
+        @keyframes zoom {
+            from {
+                transform: scale(0)
+            }
+
+            to {
+                transform: scale(1)
+            }
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* --- 7. Video Section --- */
+        .video-section {
+            padding: 60px 20px;
+            text-align: center;
+            background: white;
+        }
+
+        .video-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- 8. Letter / Lời nhắn --- */
+        .letter-section {
+            padding: 80px 20px;
+            background: url('https://www.transparenttextures.com/patterns/cubes.png'), var(--secondary-color);
+            text-align: center;
+        }
+
+        .letter-paper {
+            background: white;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .letter-paper::before {
+            content: '❝';
+            font-size: 5rem;
+            color: var(--secondary-color);
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            opacity: 0.5;
+        }
+
+        .quote {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .message-body {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: #333;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        /* --- Music Button --- */
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            animation: rotate 3s linear infinite;
+        }
+
+        .music-btn.paused {
+            animation-play-state: paused;
+            background: #aaa;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* --- Responsive Mobile --- */
+        @media screen and (max-width: 768px) {
+            header h1 {
+                font-size: 3rem;
+            }
+
+            .timeline::after {
+                left: 31px;
+            }
+
+            .container {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .container::before {
+                left: 60px;
+                border: medium solid white;
+                border-width: 10px 10px 10px 0;
+                border-color: transparent #fff5f7 transparent transparent;
+            }
+
+            .left::after,
+            .right::after {
+                left: 15px;
+            }
+
+            .right {
+                left: 0%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+    <div class="music-btn" onclick="toggleMusic()">
+        <i class="fas fa-music"></i>
+    </div>
+
+    <div class="falling-container" id="falling-container"></div>
+
+    <header>
+        <h1>Happy Anniversary</h1>
+        <p>Kỷ niệm tình yêu của chúng mình</p>
+        <p style="font-size: 1rem; margin-top: 5px;">Since 2024</p>
+
+        <div class="scroll-down">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </header>
+
+    <div class="counter-section">
+        <h3 style="margin-bottom: 20px; color: #555;">Chúng ta đã bên nhau</h3>
+        <div class="counter-box">
+            <div class="c-item"><span class="c-number" id="days">0</span><span class="c-label">Ngày</span></div>
+            <div class="c-item"><span class="c-number" id="hours">0</span><span class="c-label">Giờ</span></div>
+            <div class="c-item"><span class="c-number" id="minutes">0</span><span class="c-label">Phút</span></div>
+            <div class="c-item"><span class="c-number" id="seconds">0</span><span class="c-label">Giây</span></div>
+        </div>
+    </div>
+
+    <section class="about-section">
+        <h2 class="section-title">About Us</h2>
+        <div class="couple-container">
+            <div class="person">
+                <img src="images/1e2e26d1fbba75e42cab8.jpg"
+                    alt="He" class="person-img">
+                <h3>Văn Quang</h3>
+                <p>🎂 05/01/2002</p>
+                <p>"Ít nói, làm nhiều, chiều người yêu số 1"</p>
+            </div>
+            <div class="heart-divider"><i class="fas fa-heart"></i></div>
+            <div class="person">
+                <img src="images/1bad3473e91867463e095.jpg"
+                    alt="She" class="person-img">
+                <h3>Thu Hương</h3>
+                <p>🎂 03/10/2006</p>
+                <p>"Đáng yêu, hay dỗi nhưng dễ dỗ"</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="timeline-section">
+        <h2 class="section-title">Chặng Đường Tình Yêu</h2>
+        <div class="timeline">
+            <div class="container left">
+                <div class="content">
+                    <h2>Lần đầu gặp gỡ</h2>
+                    <p class="date">31/01/2024</p>
+                    <p>Ngày định mệnh ấy anh đã va phải em tại nhà anh.</p>
+                </div>
+            </div>
+            <div class="timeline">
+                <div class="container right">
+                    <div class="content">
+                        <h2>Khoảnh khắc rung động</h2>
+                        <p class="date">Một ngày đẹp trời</p>
+                        <!-- <img src="https://images.unsplash.com/photo-1511253259073-4081cb13bc48?q=80&w=400&auto=format&fit=crop" alt="Love"> -->
+                        <p>Chẳng nhớ chính xác là lúc nào, chỉ biết là tim anh đã lỡ nhịp vì nụ cười của em. Từ thích
+                            thích thành yêu yêu.</p>
+                    </div>
+                </div>
+
+                <div class="container left">
+                    <div class="content">
+                        <h2>Những buổi hẹn hò</h2>
+                        <p class="date">Những ngày bên nhau</p>
+                        <p>Là những vòng xe dạo quanh thành phố, những quán ăn quen thuộc và cái nắm tay ngày càng chặt
+                            hơn.</p>
+                    </div>
+                </div>
+
+                <div class="container right">
+                    <div class="content">
+                        <h2>Chúng ta của hiện tại</h2>
+                        <p class="date">Mỗi ngày trôi qua</p>
+                        <p>Không quan trọng ngày tháng, quan trọng là mỗi sáng thức dậy anh đều yêu em nhiều hơn hôm
+                            qua. Cảm ơn em đã ở bên anh!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery-section">
+        <h2 class="section-title">Khoảnh Khắc Ngọt Ngào</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="images/6538efea3281bcdfe5903.jpg" alt="Pic 1">
+                <div class="gallery-overlay">Đi Ăn Uống</div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="images/78ed7334ae5f2001794e6.jpg" alt="Pic 2">
+                <div class="gallery-overlay">Du Lịch</div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="images/b91a31caeca162ff3bb02.jpg" alt="Pic 3">
+                <div class="gallery-overlay">Đời Thường</div>
+            </div>
+            <!-- <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://images.unsplash.com/photo-1621621667797-e06afc217fb0?q=80&w=400" alt="Pic 4">
+                <div class="gallery-overlay">Cùng Cười</div>
+            </div> -->
+        </div>
+    </section>
+
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+    </div>
+
+    <!-- <section class="video-section">
+        <h2 class="section-title">Phim Của Chúng Mình</h2>
+        <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=example" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+    </section> -->
+
+    <section class="letter-section">
+        <div class="letter-paper">
+            <span class="quote">"Tình yêu không phải là nhìn nhau, mà là cùng nhìn về một hướng."</span>
+            <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
+            <p class="message-body">
+                Gửi em yêu dấu,<br><br>
+                Cảm ơn em đã xuất hiện và khiến cuộc sống của anh trở nên rực rỡ sắc màu. Mỗi ngày bên em đều là một món
+                quà. Anh hứa sẽ luôn nắm chặt tay em đi qua mọi thăng trầm của cuộc sống.<br><br>
+                Yêu em mãi mãi!
+            </p>
+            <p style="font-family: 'Dancing Script'; font-size: 1.5rem; text-align: right;">- Anh của em -</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>Văn Quang ❤️ Thu Hương</p>
+        <p style="font-size: 0.8rem; margin-top: 5px;">Happy Anniversary 31/01/2024</p>
+    </footer>
+
+    <script>
+        // --- 1. ĐẾM NGÀY YÊU ---
+        const startDate = new Date("2024-01-31").getTime(); // Thay ngày của bạn
+
+        const timer = setInterval(function () {
+            const now = new Date().getTime();
+            const distance = now - startDate;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerHTML = days;
+            document.getElementById("hours").innerHTML = hours;
+            document.getElementById("minutes").innerHTML = minutes;
+            document.getElementById("seconds").innerHTML = seconds;
+        }, 1000);
+
+        // --- 2. NHẠC NỀN ---
+        const music = document.getElementById("bg-music");
+        const btn = document.querySelector(".music-btn");
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                btn.classList.add("paused");
+            } else {
+                music.play();
+                btn.classList.remove("paused");
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // --- 3. HIỆU ỨNG RƠI (HOA/TIM) ---
+        function createFallingElements() {
+            const container = document.getElementById('falling-container');
+            const symbols = ['🌸', '💗', '✨', '🌼']; // Các icon sẽ rơi
+
+            setInterval(() => {
+                const el = document.createElement('div');
+                el.classList.add('falling-item');
+                el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.animationDuration = Math.random() * 3 + 4 + 's'; // 4-7 giây
+                el.style.fontSize = Math.random() * 20 + 10 + 'px';
+                el.style.opacity = Math.random();
+
+                container.appendChild(el);
+
+                setTimeout(() => { el.remove() }, 7000);
+            }, 500); // 0.5s tạo 1 icon mới
+        }
+        createFallingElements();
+
+        // --- 4. LIGHTBOX (XEM ẢNH) ---
+        function openLightbox(element) {
+            const modal = document.getElementById("lightbox");
+            const modalImg = document.getElementById("lightbox-img");
+            const img = element.querySelector('img');
+
+            modal.style.display = "flex";
+            modalImg.src = img.src;
+        }
+
+        function closeLightbox() {
+            document.getElementById("lightbox").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>
